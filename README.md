@@ -1,26 +1,33 @@
-# Personal Finance API
+# Personal Finance API - Documentation
 
-Projeto de estudo para entrada e saida de movimentações financeiras.
+## Project Overview
 
-## escopo
+The **Personal Finance API** is a study project designed to manage financial transactions, including income and expenses, with categorization and filtering capabilities. It also includes authentication features and CSV export functionality.
 
-API de Finanas Pessoais -
-Entradas/sadas com categorias e filtros -
-Autenticao, exportao CSV -
-Setores: Fintechs, SaaS, consultorias
+### Target Sectors
 
-## routes
+- Fintechs
+- SaaS (Software as a Service)
+- Financial Consultancies
 
-### Login -
+---
 
-Método Rota Ação
-POST /login Realiza login
+## API Routes
 
-### Incomes -
+### **Authentication**
 
-Método Rota Ação
-POST /transactions/incomes Criar entrada
-GET /transactions/incomes Listar entradas
-GET /transactions/income/:id Detalhar entrada
-PUT /transactions/income/:id Atualizar entrada
-DELETE /transactions/income/:id Remover entrada
+| Method | Route       | Action           |
+|--------|-------------|------------------|
+| POST   | `/login`    | User login       |
+
+---
+
+### **Income Transactions**
+
+| Method | Route                          | Action                     |
+|--------|--------------------------------|----------------------------|
+| POST   | `/transactions/incomes`        | Create a new income entry   |
+| GET    | `/transactions/incomes`        | List all income entries    |
+| GET    | `/transactions/income/:id`     | Retrieve a specific income |
+| PUT    | `/transactions/income/:id`     | Update an income entry     |
+| DELETE | `/transactions/income/:id`     | Delete an income entry     |
