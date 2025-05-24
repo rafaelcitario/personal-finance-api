@@ -1,0 +1,31 @@
+{
+  "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "eslint": "^9.27.0",
+    "globals": "^16.1.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "prisma": "^6.8.2",
+    "zod": "^3.25.28"
+  },
+  "name": "personal-finance-api",
+  "version": "1.0.0",
+  "description": "Projeto de estudo para entrada e saida de movimentações financeiras.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
