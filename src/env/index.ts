@@ -5,7 +5,7 @@ import 'dotenv/config';
 const envSchema = z.object( {
     NODE_ENV: z.enum( ['development', 'test', 'production'] ).default( 'development' ),
     SERVER_HOST: z.string().default( 'localhost' ),
-    SERVER_PORT: z.coerce.number().default( 4433 ),
+    SERVER_PORT: z.string().transform( port => parseInt( port ) ).default( '8000 ' ),
 } );
 
 

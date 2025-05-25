@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { transactionsRoutes } from './transactions.routes';
 import { authRoutes } from './login.routes';
+import { validateLoginPayload } from '../middlewares/auth.middleware';
 
 export const router = Router();
 
 
-router.use( '/login', authRoutes );
-router.use( '/register', authRoutes );
+router.use( '/auth', validateLoginPayload, authRoutes );
 router.use( '/transactions', transactionsRoutes );

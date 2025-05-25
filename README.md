@@ -19,6 +19,7 @@ The **Personal Finance API** is a study project designed to manage financial tra
 | Method | Route       | Action           |
 |--------|-------------|------------------|
 | POST   | `/login`    | User login       |
+| POST   | `/register` | User register    |
 
 ---
 
