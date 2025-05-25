@@ -10,6 +10,6 @@ export function authLoginController ( req: Request, res: Response ) {
         res.status( 200 ).send( 'The login was a success!' );
     } catch ( e ) {
         const typedError = e as Error;
-        res.status( 400 ).send( { error: typedError.message } );
+        res.status( 500 ).send( { error: typedError.message } );
     }
 }
