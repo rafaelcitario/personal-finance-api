@@ -1,8 +1,8 @@
 # Personal Finance API
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Node.js](https://img.shields.io/badge/Node.js-18+-green)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.8+-blue)
+![Version](https://img.shields.io/badge/version-v0.4.0-blue)
+![Node.js](https://img.shields.io/badge/Node.js-v22.15.1+-green)
+![TypeScript](https://img.shields.io/badge/TypeScript-v5.8.3+-blue)
 
 API para gerenciamento de finanças pessoais com autenticação, transações e exportação de dados.
 
