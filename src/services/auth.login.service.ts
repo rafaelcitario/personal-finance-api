@@ -2,6 +2,7 @@ import { AuthPayload } from '../interfaces/auth.login.interface';
 import { authLoginRepository } from '../repositories/auth.login.repository';
 import { createHash } from 'node:crypto';
 import { sign } from 'jsonwebtoken';
+import { ENV } from '../env';
 
 
 interface JWTPayloadSchema {
@@ -18,6 +19,6 @@ export async function authLoginService ( data: AuthPayload ) {
     }
 
     const jwtPayload: JWTPayloadSchema = await user;
-    const jsonwebtoken = sign( { jwtPayload }, 'secret', { algorithm: 'HS512', expiresIn: '60Min' } );
+    const jsonwebtoken = sign( { jwtPayload }, ENV.JWT_SECRET, { algorithm: 'HS512', expiresIn: '60Min' } );
     return { message: 'Login successful.', token: jsonwebtoken, user: jwtPayload.id };
 }

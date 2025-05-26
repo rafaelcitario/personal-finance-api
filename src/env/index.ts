@@ -6,6 +6,7 @@ const envSchema = z.object( {
     NODE_ENV: z.enum( ['development', 'test', 'production'] ).default( 'development' ),
     SERVER_HOST: z.string().default( 'localhost' ),
     SERVER_PORT: z.string().transform( port => parseInt( port ) ).default( '8000 ' ),
+    JWT_SECRET: z.string()
 } );
 
 

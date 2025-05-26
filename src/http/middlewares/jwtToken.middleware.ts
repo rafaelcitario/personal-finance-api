@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import { ENV } from '../../env';
 export function jwtTokenVerify ( req: Request, res: Response, next: NextFunction ) {
     const auth = req.headers['authorization'] ?? '';
 
@@ -12,7 +13,7 @@ export function jwtTokenVerify ( req: Request, res: Response, next: NextFunction
     const token = auth.split( ' ' )[1];
 
     try {
-        const decoded = jwt.verify( token, 'secret' );
+        const decoded = jwt.verify( token, ENV.JWT_SECRET );
         req.jwtPayload = decoded;
         next();
     } catch ( e ) {
