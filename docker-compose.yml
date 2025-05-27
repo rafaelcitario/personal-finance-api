@@ -1,28 +1,16 @@
-# Use postgres/example user/password credentials
 services:
   db:
     image: postgres
-    entrypoint: bash -c
-    tty: true
-    command:
-      - echo $$TEST1
-
     restart: always
-    # set shared memory limit when using docker compose
     shm_size: 128mb
-    # or set shared memory limit when deploy via swarm stack
-    #volumes:
-    #  - type: tmpfs
-    #    target: /dev/shm
-    #    tmpfs:
-    #      size: 134217728 # 128*2^20 bytes = 128Mb
 
     ports:
-      - 3456:3456
+      - 5432:5432
+
     environment:
-      POSTGRES_USER: $$DATABASE_USER
-      POSTGRES_PASSWORD: $$DATABASE_PASSWORD
-      POSTGRES_DB: $$DATABASE_NAME
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
 
     env_file:
-      - .env.container
+      - .env
