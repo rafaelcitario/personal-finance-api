@@ -8,6 +8,7 @@ export function jwtTokenVerify ( req: Request, res: Response, next: NextFunction
         res.status( 401 ).send( {
             message: 'Unauthorized token: wrong format or missing "Bearer" prefix.'
         } );
+        return;
     }
 
     const token = auth.split( ' ' )[1];
@@ -22,5 +23,6 @@ export function jwtTokenVerify ( req: Request, res: Response, next: NextFunction
             message: 'Invalid or expired token.',
             error: typedError
         } );
+        return;
     }
 }

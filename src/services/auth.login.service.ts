@@ -5,9 +5,10 @@ import { sign } from 'jsonwebtoken';
 import { ENV } from '../env';
 
 
-interface JWTPayloadSchema {
+export interface JWTPayloadSchema {
     id: number,
     name: string,
+    email: string;
 }
 export async function authLoginService ( data: AuthPayload ) {
     const { email, password } = data;
@@ -19,6 +20,18 @@ export async function authLoginService ( data: AuthPayload ) {
     }
 
     const jwtPayload: JWTPayloadSchema = await user;
-    const jsonwebtoken = sign( { jwtPayload }, ENV.JWT_SECRET, { algorithm: 'HS512', expiresIn: '60Min' } );
-    return { message: 'Login successful.', token: jsonwebtoken, user: jwtPayload.id };
+    const token = sign( jwtPayload, ENV.JWT_SECRET, { algorithm: 'HS512', expiresIn: ENV.JWT_TOKEN_LIFE } );
+    const refreshToken = sign( jwtPayload, ENV.JWT_REFRESH_SECRET, { expiresIn: ENV.JWT_REFRESH_LIFE } );
+    const response = {
+        status: 'Logged in',
+        userId: jwtPayload.id,
+        name: jwtPayload.name,
+        email: jwtPayload.email,
+        auth: {
+            token,
+            refreshToken,
+        }
+    };
+    // call updater user route and save refresh-token at the database.
+    return response;
 }

@@ -4,7 +4,7 @@ export const transactionsRoutes = Router();
 
 
 function handler ( req: Request, res: Response ) {
-    res.send( 'ok' );
+    res.send( req.jwtPayload );
 }
 
 transactionsRoutes.post( '/incomes', handler );

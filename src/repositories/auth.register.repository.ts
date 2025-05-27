@@ -10,6 +10,5 @@ export function authRegisterRepository ( data: AuthRepositoryDTO & { password_ha
     }];
     // TODO: add database connection to find login and password
     const temp = [name, email, password_hash, database];
-    console.log( temp );
 }
 

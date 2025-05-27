@@ -12,6 +12,5 @@ export async function authLoginRepository ( data: AuthRepositoryDTO & { password
     const database = [user];
     // TODO: add database connection to find login and password
     const temp = [email, password_hash, database];
-    console.log( temp );
     return await user;
 }
