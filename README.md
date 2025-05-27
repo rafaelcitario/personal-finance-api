@@ -1,6 +1,6 @@
 # Personal Finance API
 
-![Version](https://img.shields.io/badge/version-v0.4.0-blue)
+![Version](https://img.shields.io/badge/version-v0.7.0-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-v22.15.1+-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v5.8.3+-blue)
 
