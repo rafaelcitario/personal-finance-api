@@ -32,6 +32,5 @@ export async function authLoginService ( data: AuthPayload ) {
             refreshToken,
         }
     };
-    // call updater user route and save refresh-token at the database.
     return response;
 }
