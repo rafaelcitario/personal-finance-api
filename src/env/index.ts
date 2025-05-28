@@ -10,7 +10,7 @@ const envSchema = z.object( {
     JWT_REFRESH_SECRET: z.string(),
     JWT_TOKEN_LIFE: z.string().transform( ( time ) => parseInt( time ) ),
     JWT_REFRESH_LIFE: z.string().transform( ( time ) => parseInt( time ) ),
-    DATABASE_URI: z.string()
+    DATABASE_URL: z.string()
 } );
 
 
