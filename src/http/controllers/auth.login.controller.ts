@@ -10,6 +10,10 @@ export async function authLoginController ( req: Request, res: Response ) {
         res.status( 201 ).json( loginAuth );
     } catch ( e ) {
         const typedError = e as Error;
+        if ( typedError.message.includes( 'An operation failed because it depends on one or more records that were required but not found' ) ) {
+            typedError.message = 'Wrong e-mail or password, if you missed your data click in recover password.';
+            res.status( 403 ).send( { error: typedError.message } );
+        }
         res.status( 500 ).send( { error: typedError.message } );
     }
 }

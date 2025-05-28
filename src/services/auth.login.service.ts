@@ -6,7 +6,7 @@ import { ENV } from '../env';
 
 
 export interface JWTPayloadSchema {
-    id: number,
+    id: string,
     name: string,
     email: string;
 }
