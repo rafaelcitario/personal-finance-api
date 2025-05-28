@@ -4,13 +4,19 @@ import { authRegisterService } from '../../services/auth.register.service';
 
 
 export type RegisterPayload = Required<AuthPayload & { name: string; }>;
-export function authRegisterController ( req: Request, res: Response ) {
+export async function authRegisterController ( req: Request, res: Response ) {
     const { name, email, password }: RegisterPayload = req.body;
     try {
-        authRegisterService( { name, email, password } );
+        await authRegisterService( { name, email, password } );
         res.status( 200 ).send( 'Register was a success!' );
     } catch ( e ) {
         const typedError = e as Error;
-        res.status( 500 ).send( { error: typedError } );
+        if ( typedError.message.includes( 'Unique constraint failed on the fields: (`email`)' ) ) {
+            typedError.message = 'Unavailable e-mail';
+            res.status( 401 ).send( { error: typedError.message } );
+            return;
+        }
+        res.status( 500 ).send( { error: typedError.message } );
+        return;
     }
 }
