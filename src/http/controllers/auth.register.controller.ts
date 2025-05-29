@@ -9,6 +9,7 @@ export async function authRegisterController ( req: Request, res: Response ) {
     try {
         await authRegisterService( { name, email, password } );
         res.status( 200 ).send( 'Register was a success!' );
+        return;
     } catch ( e ) {
         const typedError = e as Error;
         if ( typedError.message.includes( 'Unique constraint failed on the fields: (`email`)' ) ) {

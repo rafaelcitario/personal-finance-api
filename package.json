@@ -30,7 +30,10 @@
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "dev": "nodemon src/server.ts",
-    "start": "ts-node src/server.ts"
+    "start": "ts-node src/server.ts",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:generate": "prisma generate",
+    "prisma:db": "prisma db pull"
   },
   "keywords": [
     "express",

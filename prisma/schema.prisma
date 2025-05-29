@@ -15,7 +15,7 @@ datasource db {
 }
 
 model Users {
-  id            String          @id @unique @default(uuid()) @map("_id") @db.Uuid
+  id            String          @id @unique @default(uuid()) @map("_id")
   name          String          @db.VarChar(100)
   email         String          @unique @db.VarChar(255)
   password_hash String          @db.VarChar(255)
@@ -27,10 +27,10 @@ model Users {
 }
 
 model RefreshTokens {
-  id        String   @id @unique @default(uuid()) @map("_id") @db.Uuid
-  token     String   @db.VarChar(255)
+  id        String   @id @unique @default(uuid()) @map("_id")
+  token     String   @db.Text
   users     Users    @relation(fields: [users_id], references: [id])
-  users_id  String   @db.Uuid
+  users_id  String
   createdAt DateTime @default(now()) @db.Timestamp()
   updatedAt DateTime @updatedAt
 

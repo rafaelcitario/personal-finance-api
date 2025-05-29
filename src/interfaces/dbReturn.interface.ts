@@ -1,1 +1,1 @@
-export interface DatabaseReturn { id: number, name: string, email: string; }
+export interface DatabaseReturn { id: string, name: string, email: string; }
