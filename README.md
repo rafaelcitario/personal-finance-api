@@ -1,54 +1,58 @@
 # Personal Finance API
 
-![Version](https://img.shields.io/badge/version-v0.7.0-blue)
+![Version](https://img.shields.io/badge/version-v0.8.4-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-v22.15.1+-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v5.8.3+-blue)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-brightgreen)
 
-API para gerenciamento de finanças pessoais com autenticação, transações e exportação de dados.
+API para gerenciamento de finanças pessoais com autenticação JWT, registro de usuários e gerenciamento de tokens.
 
 ## 🌟 Visão Geral
 
-API desenvolvida para estudo e prática, com o objetivo de gerenciar transações financeiras pessoais, incluindo receitas e despesas com categorização. Oferece autenticação de usuários e capacidade de exportação de dados em CSV.
+API desenvolvida para estudo e prática, com foco em autenticação segura usando JWT e refresh tokens. Implementa boas práticas de desenvolvimento como validação de dados, tipagem estática e arquitetura limpa.
 
-**Setores-alvo:**
+**Principais recursos:**
 
-- Fintechs
-- SaaS (Software as a Service)
-- Consultorias Financeiras
-
-## 🚀 Funcionalidades
-
-- ✅ Autenticação de usuários (JWT)
-- 🔄️ CRUD completo para transações financeiras
-- 🔄️ Categorização de transações
-- 🔄️ Filtros avançados
-- 🔄️ Exportação para CSV
-- ✅ Validação de dados com Zod
-- ✅ Tipagem estática com TypeScript
+- ✅ Autenticação segura com JWT
+- 🔄️ Sistema de refresh tokens
+- 🔒 Validação de payloads com Zod
+- 🏗️ Arquitetura em camadas (controller-service-repository)
+- 📦 Prisma como ORM para PostgreSQL
 
 ## 💻 Tecnologias
 
-**Principais tecnologias:**
+**Stack principal:**
 
-- Node.js
+- Node.js v22+
 - Express
 - TypeScript
-- Zod (validação)
 - Prisma (ORM)
+- PostgreSQL
 - JWT (autenticação)
+- Zod (validação)
 
-**Dependências de desenvolvimento:**
+**Dependências principais:**
 
+- `express`: Framework web
+- `jsonwebtoken`: Implementação JWT
+- `zod`: Validação de dados
+- `@prisma/client`: ORM para PostgreSQL
+- `dotenv`: Gerenciamento de variáveis de ambiente
+
+**Dev Dependencies:**
+
+- TypeScript
 - ESLint (linting)
 - Nodemon (hot reload)
 - ts-node (execução TS)
+- Prisma CLI
 
 ## 📦 Instalação
 
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/personal-finance-api.git
+git clone https://github.com/rafaelcitario/personal-finance-api.git
 ```
 
 2. Instale as dependências:
@@ -57,9 +61,15 @@ git clone https://github.com/seu-usuario/personal-finance-api.git
 npm install
 ```
 
-3. Configure as variáveis de ambiente (veja a seção abaixo)
+3. Configure o banco de dados:
 
-4. Inicie o servidor:
+```bash
+npx prisma migrate dev
+```
+
+4. Configure as variáveis de ambiente (veja a seção abaixo)
+
+5. Inicie o servidor:
 
 ```bash
 npm run dev
@@ -74,17 +84,20 @@ NODE_ENV=development
 SERVER_HOST=localhost
 SERVER_PORT=8000
 JWT_SECRET=sua_chave_secreta_aqui
+JWT_REFRESH_SECRET=sua_chave_secreta_refresh
 DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 ```
 
-## 📂 Estrutura do Projeto
+## 📂 Estrutura do Projeto (Atualizada)
 
 ```bash
 src/
+├── @types/            # Definições de tipos extendidos
+├── DTOs/              # Objetos de transferência de dados
 ├── env/               # Configurações de ambiente
 ├── http/              # Camada HTTP
-│   ├── controllers/   # Lógica dos endpoints
-│   ├── middlewares/   # Middlewares
+│   ├── controllers/   # Lógica dos endpoints (auth)
+│   ├── middlewares/   # Middlewares (JWT, validação)
 │   └── routes/        # Definição de rotas
 ├── interfaces/        # Tipos e interfaces
 ├── repositories/      # Camada de acesso a dados
@@ -92,85 +105,66 @@ src/
 └── server.ts          # Ponto de entrada
 ```
 
-## 🛣️ Rotas da API
+## 🛣️ Rotas da API (Atualizadas)
 
 ### Autenticação
 
-| Método | Rota        | Descrição               |
-|--------|-------------|-------------------------|
-| POST   | `/login`    | Login de usuário        |
-| POST   | `/register` | Registro de novo usuário|
+| Método | Rota        | Descrição                          |
+|--------|-------------|------------------------------------|
+| POST   | `/login`    | Login de usuário (gera JWT)        |
+| POST   | `/register` | Registro de novo usuário           |
+| POST   | `/token`    | Gera novo access token com refresh |
 
-### Transações (Receitas)
+### Middlewares Implementados
 
-| Método | Rota                          | Descrição                     |
-|--------|--------------------------------|-------------------------------|
-| POST   | `/transactions/incomes`        | Cria nova receita             |
-| GET    | `/transactions/incomes`        | Lista todas receitas          |
-| GET    | `/transactions/income/:id`     | Obtém detalhes de uma receita |
-| PUT    | `/transactions/income/:id`     | Atualiza uma receita          |
-| DELETE | `/transactions/income/:id`     | Remove uma receita            |
+1. **authPayload.middleware**: Valida payloads de autenticação
+2. **jwtToken.middleware**: Verifica e valida tokens JWT
 
-*(Documentação completa disponível no Postman/Swagger)*
+## 🔧 Variáveis de Ambiente (Atualizadas)
 
-## 🔧 Variáveis de Ambiente
-
-| Variável      | Tipo     | Descrição                     | Padrão       |
-|---------------|----------|-------------------------------|--------------|
-| NODE_ENV      | string   | Ambiente de execução          | development  |
-| SERVER_HOST   | string   | Host do servidor              | localhost    |
-| SERVER_PORT   | number   | Porta do servidor             | 8000         |
-| JWT_SECRET    | string   | Chave secreta para JWT        | -            |
-| DATABASE_URL  | string   | URL de conexão com o banco    | -            |
+| Variável            | Tipo     | Descrição                              | Obrigatório |
+|---------------------|----------|----------------------------------------|-------------|
+| NODE_ENV            | string   | Ambiente de execução                   | Sim         |
+| SERVER_HOST         | string   | Host do servidor                       | Não         |
+| SERVER_PORT         | number   | Porta do servidor                      | Sim         |
+| JWT_SECRET          | string   | Chave secreta para JWT                 | Sim         |
+| JWT_REFRESH_SECRET  | string   | Chave secreta para refresh tokens      | Sim         |
+| DATABASE_URL        | string   | URL de conexão com o PostgreSQL        | Sim         |
 
 ## 🛠️ Scripts Úteis
 
 ```bash
-npm run dev     # Inicia servidor em desenvolvimento
-npm start       # Inicia servidor em produção
-npm run lint    # Executa análise estática do código
-npm run lint:fix # Corrige problemas de linting automaticamente
+npm run dev          # Inicia servidor em desenvolvimento
+npm start            # Inicia servidor em produção
+npm run lint         # Executa análise estática do código
+npm run lint:fix     # Corrige problemas de linting
+npm run prisma:migrate  # Executa migrações do banco
+npm run prisma:generate # Gera client do Prisma
 ```
 
-## 📜 Changelog
+## 📜 Changelog (Atualizado)
 
-### v0.4.0 (Atual)
+### v0.8.4 (Atual)
 
-- Adicionado middleware de autenticação
-- Melhorias no sistema de login
+- Implementação completa das rotas de login, registro e token
+- Geração de JWT e refresh tokens
+- Middlewares de validação
 
-### v0.3.0
+### v0.7.0 - v0.7.4
 
-- Criadas rotas básicas (/transactions, /login, /register)
+- Correções no fluxo de registro
+- Validação de senha
+- Conexão com banco de dados Prisma
 
-### v0.2.0
+### v0.6.0
 
-- Configurado servidor Express
+- Implementação inicial de JWT
 
-### v0.1.0
+### v0.4.0 - v0.5.0
 
-- Implementada validação de variáveis de ambiente com Zod
+- Middleware de autenticação
+- Feature de registro de usuários
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-### Melhorias adicionadas
-
-1. **Badges** - Adicionei badges para versão, Node.js e TypeScript
-2. **Índice** - Organizei o conteúdo em seções claras
-3. **Seção de Tecnologias** - Destaquei as principais tecnologias
-4. **Guia de Instalação** - Passo a passo completo
-5. **Estrutura de Pastas** - Explicação detalhada
-6. **Variáveis de Ambiente** - Tabela organizada
-7. **Scripts Úteis** - Explicação dos comandos npm
-8. **Changelog** - Histórico de versões baseado nos seus commits
-9. **Licença** - Informação sobre licenciamento
-
-Possíveis melhorias futuramente:
-
-- Seção de "Contribuição" (se for open source)
-- Link para documentação no Postman/Swagger
-- Exemplos de requests/responses
-- Testes automatizados (quando implementar)
-- Status do CI/CD (quando configurar)
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes
