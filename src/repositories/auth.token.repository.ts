@@ -1,5 +1,5 @@
-import { PrismaClient } from '../../generated/prisma';
 import { JWTRefreshTokenRepository } from '../interfaces/jwt.interfaces';
+import { prisma } from '../lib/prisma';
 
 export async function authRefreshTokenRepository ( data: JWTRefreshTokenRepository ): Promise<{
     id: string;
@@ -8,7 +8,6 @@ export async function authRefreshTokenRepository ( data: JWTRefreshTokenReposito
     createdAt: Date;
     updatedAt: Date;
 }> {
-    const prisma = new PrismaClient();
     try {
         let token = await prisma.refreshTokens.findFirst( {
             where: {

@@ -1,10 +1,9 @@
-import { PrismaClient } from '../../generated/prisma';
 import { AuthRepositoryDTO } from '../DTOs/authLogin.DTO';
 import { DatabaseReturn } from '../interfaces/dbReturn.interface';
+import { prisma } from '../lib/prisma';
 
 export async function authLoginRepository ( data: AuthRepositoryDTO & { password_hash: string; } ): Promise<DatabaseReturn> {
     const { email, password_hash } = data;
-    const prisma = new PrismaClient();
     const user = await prisma.$transaction( [
         prisma.users.findFirstOrThrow( {
             where: {
