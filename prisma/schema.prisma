@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -14,33 +8,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum IncomeTypes {
-  PAYCHECK
-  INTEREST
-  REFUND
-  GIFT
-}
-
 model Users {
   id            String          @id @unique @default(uuid()) @map("_id")
   name          String          @db.VarChar(100)
   email         String          @unique @db.VarChar(255)
   password_hash String          @db.VarChar(255)
-  createdAt     DateTime        @default(now()) @db.Timestamp()
+  createdAt     DateTime        @default(now()) @db.Timestamp(6)
   updatedAt     DateTime        @updatedAt
-  RefreshTokens RefreshTokens[]
   Incomes       Incomes[]
+  RefreshTokens RefreshTokens[]
 
   @@map("users")
 }
 
 model RefreshTokens {
   id        String   @id @unique @default(uuid()) @map("_id")
-  token     String   @db.Text
-  users     Users    @relation(fields: [users_id], references: [id])
+  token     String
   users_id  String
-  createdAt DateTime @default(now()) @db.Timestamp()
+  createdAt DateTime @default(now()) @db.Timestamp(6)
   updatedAt DateTime @updatedAt
+  users     Users    @relation(fields: [users_id], references: [id])
 
   @@index([id, users_id])
   @@map("refresh_tokens")
@@ -50,13 +37,20 @@ model Incomes {
   id          String      @id @unique @default(uuid()) @map("_id")
   title       String      @db.VarChar(100)
   type        IncomeTypes
-  valor       Decimal     @db.Decimal(19, 4)
-  description String      @db.Text
-  users       Users       @relation(fields: [users_id], references: [id])
+  amount      Decimal     @db.Decimal(19, 4)
+  description String
   users_id    String
-  createdAt   DateTime    @default(now()) @db.Timestamp()
+  createdAt   DateTime    @default(now()) @db.Timestamp(6)
   updatedAt   DateTime    @updatedAt
+  users       Users       @relation(fields: [users_id], references: [id])
 
   @@index([id, users_id])
   @@map("incomes")
+}
+
+enum IncomeTypes {
+  PAYCHECK
+  INTEREST
+  REFUND
+  GIFT
 }
