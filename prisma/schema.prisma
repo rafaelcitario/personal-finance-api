@@ -14,6 +14,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum IncomeTypes {
+  PAYCHECK
+  INTEREST
+  REFUND
+  GIFT
+}
+
 model Users {
   id            String          @id @unique @default(uuid()) @map("_id")
   name          String          @db.VarChar(100)
@@ -22,6 +29,7 @@ model Users {
   createdAt     DateTime        @default(now()) @db.Timestamp()
   updatedAt     DateTime        @updatedAt
   RefreshTokens RefreshTokens[]
+  Incomes       Incomes[]
 
   @@map("users")
 }
@@ -34,5 +42,21 @@ model RefreshTokens {
   createdAt DateTime @default(now()) @db.Timestamp()
   updatedAt DateTime @updatedAt
 
+  @@index([id, users_id])
   @@map("refresh_tokens")
+}
+
+model Incomes {
+  id          String      @id @unique @default(uuid()) @map("_id")
+  title       String      @db.VarChar(100)
+  type        IncomeTypes
+  valor       Decimal     @db.Decimal(19, 4)
+  description String      @db.Text
+  users       Users       @relation(fields: [users_id], references: [id])
+  users_id    String
+  createdAt   DateTime    @default(now()) @db.Timestamp()
+  updatedAt   DateTime    @updatedAt
+
+  @@index([id, users_id])
+  @@map("incomes")
 }

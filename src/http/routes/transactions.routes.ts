@@ -1,15 +1,11 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
+import { transactionIncomesController } from '../controllers/transactions.controller';
 
 export const transactionsRoutes = Router();
 
-
-function handler ( req: Request, res: Response ) {
-    res.send( req.jwtPayload );
-}
-
-transactionsRoutes.post( '/incomes', handler );
-transactionsRoutes.get( '/incomes', handler );
-transactionsRoutes.put( '/income/{:id}', handler );
-transactionsRoutes.get( '/income/{:id}', handler );
-transactionsRoutes.delete( '/income/{:id}', handler );
+transactionsRoutes.post( '/incomes', transactionIncomesController );
+transactionsRoutes.get( '/incomes', transactionIncomesController );
+transactionsRoutes.put( '/income/{:id}', transactionIncomesController );
+transactionsRoutes.get( '/income/{:id}', transactionIncomesController );
+transactionsRoutes.delete( '/income/{:id}', transactionIncomesController );
 
