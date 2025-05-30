@@ -1,9 +1,10 @@
 # Personal Finance API
 
-![Version](https://img.shields.io/badge/version-v0.8.4-blue)
+![Version](https://img.shields.io/badge/version-v0.10.5-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-v22.15.1+-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v5.8.3+-blue)
 ![Prisma](https://img.shields.io/badge/Prisma-ORM-brightgreen)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16+-blue)
 
 API para gerenciamento de finanças pessoais com autenticação JWT, registro de usuários e gerenciamento de tokens.
 
@@ -144,7 +145,19 @@ npm run prisma:generate # Gera client do Prisma
 
 ## 📜 Changelog (Atualizado)
 
-### v0.8.4 (Atual)
+### v0.10.5 (Atual)
+
+- Implementação completa de CRUD para transações
+- Mudança de campo "valor" para "amount" no banco
+- Melhorias na validação de payloads
+
+### v0.9.5
+
+- Implementação inicial de transações (POST)
+- Formatação de valores monetários
+- Validação de tipos de transação
+
+### v0.8.4
 
 - Implementação completa das rotas de login, registro e token
 - Geração de JWT e refresh tokens
