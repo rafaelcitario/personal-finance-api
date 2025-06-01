@@ -1,6 +1,6 @@
 # Personal Finance API
 
-![Version](https://img.shields.io/badge/version-v0.10.5-blue)
+![Version](https://img.shields.io/badge/version-v1.0.0-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-v22.15.1+-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v5.8.3+-blue)
 ![Prisma](https://img.shields.io/badge/Prisma-ORM-brightgreen)
@@ -62,15 +62,21 @@ git clone https://github.com/rafaelcitario/personal-finance-api.git
 npm install
 ```
 
-3. Configure o banco de dados:
+3. Subir container docker com postgreSQL:
+
+```bash
+npx docker compose up -d
+```
+
+4. Configure o banco de dados:
 
 ```bash
 npx prisma migrate dev
 ```
 
-4. Configure as variáveis de ambiente (veja a seção abaixo)
+5. Configure as variáveis de ambiente (veja a seção abaixo)
 
-5. Inicie o servidor:
+6. Inicie o servidor:
 
 ```bash
 npm run dev
@@ -89,23 +95,6 @@ JWT_REFRESH_SECRET=sua_chave_secreta_refresh
 DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 ```
 
-## 📂 Estrutura do Projeto (Atualizada)
-
-```bash
-src/
-├── @types/            # Definições de tipos extendidos
-├── DTOs/              # Objetos de transferência de dados
-├── env/               # Configurações de ambiente
-├── http/              # Camada HTTP
-│   ├── controllers/   # Lógica dos endpoints (auth)
-│   ├── middlewares/   # Middlewares (JWT, validação)
-│   └── routes/        # Definição de rotas
-├── interfaces/        # Tipos e interfaces
-├── repositories/      # Camada de acesso a dados
-├── services/          # Lógica de negócios
-└── server.ts          # Ponto de entrada
-```
-
 ## 🛣️ Rotas da API (Atualizadas)
 
 ### Autenticação
@@ -115,6 +104,52 @@ src/
 | POST   | `/login`    | Login de usuário (gera JWT)        |
 | POST   | `/register` | Registro de novo usuário           |
 | POST   | `/token`    | Gera novo access token com refresh |
+
+### Transações
+
+| Método | Rota                                                            | Descrição                                           |
+|--------|-----------------------------------------------------------------|-----------------------------------------------------|
+| POST   | `/transaction/incomes`                                          | Criação de incomes no banco de dados                |
+| GET    | `/transaction/incomes`                                          | Lista de todas incomes no banco dedados             |
+| GET    | `/transaction/incomes?type={INTEREST, PAYCHECK, GIFT, REFOUND}` | Lista filtrada de todas incomes no banco dedados    |
+| PUT    | `/transaction/income/{:id}`                                     | Atualização de incomes existentes no banco de dados |
+| GET    | `/transaction/income/{:id}`                                     | Busca de income por ID no banco de dados            |
+| DELETE   | `/transaction/income/${:id}`                                  | Deleção de incomes existentes no banco de dados     |
+
+#### POST /auth/register
+
+```json
+{
+    "name": "Jhon Doe",
+    "email": "jhon.doe@email.com",
+    "password": "jhonDoesPassword!2@"
+}
+
+```
+
+#### POST /auth/login
+
+```json
+{
+    "email": "jhon.doe@email.com",
+    "password": "jhonDoesPassword!2@"
+}
+
+```
+
+#### PUT /transactio/income/${:id}
+
+_type_ aceita `PAYCHECK`,`INTEREST`, `GIFT` e `REFOUND`
+
+```json
+{
+    "title": "Presente",
+    "type": "GIFT",
+    "amount": 1000000,
+    "description": "Ganhei 10 mil reais"
+}
+
+```
 
 ### Middlewares Implementados
 
@@ -145,7 +180,19 @@ npm run prisma:generate # Gera client do Prisma
 
 ## 📜 Changelog (Atualizado)
 
-### v0.10.5 (Atual)
+### v.1.0.0 (Atual)
+
+- versão da API pronta para deploy
+- possiveis aplicações de testes futuramente
+- possivel refatoração de código futuramente
+
+### v.0.11.5
+
+- implementação completa de CRUD para transações
+- implementação de filtros por type, startDate e endDate na rota GET `/incomes`
+- finalização da API
+
+### v0.10.5
 
 - Implementação completa de CRUD para transações
 - Mudança de campo "valor" para "amount" no banco
