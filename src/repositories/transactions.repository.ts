@@ -1,6 +1,7 @@
 import { IncomeTypes } from '../../generated/prisma';
 import { Decimal } from '../../generated/prisma/runtime/library';
 import { prisma } from '../lib/prisma';
+import { buildTransactionWhereClause } from '../utils/listFilterHelper';
 
 
 export interface CreateTransactionSchema {
@@ -42,7 +43,6 @@ export async function createTransactionRepository ( data: Omit<CreateTransaction
 }
 export async function updateTransactionRepository ( data: Partial<CreateTransactionSchema> ): Promise<CreateTransactionSchema> {
     try {
-        console.log( data );
         const updatedIncome = await prisma.$transaction( [
             prisma.incomes.update( {
                 where: {
@@ -65,20 +65,24 @@ export async function updateTransactionRepository ( data: Partial<CreateTransact
     }
 }
 
-export async function listTransactionRepository ( data: findTransactionSchema ): Promise<CreateTransactionSchema[]> {
+export async function listTransactionRepository (
+    data: findTransactionSchema & Partial<{
+        startDate: string,
+        endDate: string,
+        type: string;
+    }>
+): Promise<CreateTransactionSchema[]> {
     try {
-        const listOfIncomes = await prisma.incomes.findMany( {
-            where: {
-                users_id: data?.users_id
-            }
-        } );
+        const where = buildTransactionWhereClause( data );
+
+        const listOfIncomes = await prisma.incomes.findMany( { where } );
 
         return listOfIncomes;
     } catch ( e ) {
-        const typedError = e as Error;
-        throw new Error( typedError.message );
+        throw new Error( ( e as Error ).message );
     }
 }
+
 
 export async function findTransactionRepository ( data: findTransactionSchema ) {
     try {
