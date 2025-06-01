@@ -1,9 +1,14 @@
 import { IncomeTypes } from '../../generated/prisma';
 
 export function incomeTypesCheck ( type: string ) {
-    return Object.keys( IncomeTypes ).map( incomeType => {
-        if ( type == incomeType ) {
+    let incomeType = Object.keys( IncomeTypes ).map( incomeType => {
+        if ( type.toUpperCase() == incomeType.toUpperCase() ) {
             return true;
         }
-    } ) ? true : false;
+    } );
+    incomeType = incomeType.filter( ( type ) => {
+        return type;
+    } );
+
+    return incomeType.length <= 0 || incomeType == undefined ? false : true;
 };

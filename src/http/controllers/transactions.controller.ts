@@ -16,7 +16,12 @@ export async function createIncomeController ( req: Request, res: Response ) {
 
 export async function listIncomesController ( req: Request, res: Response ) {
     try {
-        const list = await listTransactionService( { ownerId: req.jwtPayload.id } );
+        const queryParams = {
+            startDate: req.query.startDate?.toString(),
+            endDate: req.query.endDate?.toLocaleString(),
+            type: req.query.type?.toString()
+        };
+        const list = await listTransactionService( { ownerId: req.jwtPayload.id }, { ...queryParams } );
         res.status( 200 ).json( list );
     } catch ( e ) {
         const error = e as Error;
