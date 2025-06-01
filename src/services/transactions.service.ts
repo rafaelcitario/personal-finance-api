@@ -2,6 +2,7 @@ import { IncomeFindPayload, IncomesPayload } from '../interfaces/incomePayload';
 import { createTransactionRepository, CreateTransactionSchema, deleteTransactionRepository, findTransactionRepository, listTransactionRepository, updateTransactionRepository } from '../repositories/transactions.repository';
 import { incomeValorFormatCurrency } from '../utils/formatCurrency';
 import { incomeTypesCheck } from '../utils/incomeTypeChecker';
+import { queryParamsValidator } from '../utils/queryParamsValidator';
 
 export async function createTransactionService ( income: IncomesPayload ): Promise<void> {
     const isIncomeTypeValid = incomeTypesCheck( income.type );
@@ -45,16 +46,27 @@ export async function updateTransactionService ( income: IncomesPayload ): Promi
         throw new Error( typedError.message );
     }
 }
-
-export async function listTransactionService ( income: IncomeFindPayload ): Promise<CreateTransactionSchema[] | CreateTransactionSchema> {
+export interface QueryParamsSchema {
+    startDate: string | undefined,
+    endDate: string | undefined,
+    type: string | undefined;
+}
+export async function listTransactionService ( income: IncomeFindPayload, params?: QueryParamsSchema ): Promise<CreateTransactionSchema[] | CreateTransactionSchema> {
+    const queryParams = queryParamsValidator( { ...params } );
     if ( !income.ownerId || typeof income.ownerId != 'string' ) {
         throw new Error( 'Invalid Payload' );
     }
 
 
+    const queries = Object.entries( queryParams ).filter( ( [, value] ) => value )
+        .reduce( ( acc, [key, value] ) => {
+            acc[key] = value;
+            return acc;
+        }, {} as Record<string, unknown> );
+
     if ( !income.id || typeof income.id != 'string' ) {
         return await listTransactionRepository( {
-            users_id: income.ownerId
+            users_id: income.ownerId, ...queries
         } );
     }
 
